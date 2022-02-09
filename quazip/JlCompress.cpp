@@ -171,19 +171,16 @@ bool JlCompress::extractFile(QuaZip* zip, QString fileName, QString fileDest) {
         if (srcPerm != 0) {
             QFile(fileDest).setPermissions(srcPerm);
         }
-        return true;
     }
 
     if (info.isSymbolicLink()) {
         QString target = QFile::decodeName(inFile.readAll());
         if (!QFile::link(target, fileDest))
             return false;
-        return true;
     }
 
     // Apro il file risultato
-    QFile outFile;
-    outFile.setFileName(fileDest);
+    QFile outFile(fileDest + fileName);
     if(!outFile.open(QIODevice::WriteOnly)) return false;
 
     // Copio i dati
